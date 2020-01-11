@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/index.css">
+    <title>Anonymity at Ease - sashbros</title>
+</head>
+<body>
+    <div class="text-center">
+        <h1> Hello  <%= name %> </h1>
+        <form action="/logout" method="POST">
+            <div class="form-group text-center">
+                <input class="btn btn-primary" type="submit" value="Logout">
+            </div>
+        </form>
+    
+      
+    </div>
+    <div class="container text-center">
+        <h1>Here's to some controlled Anonymity</h1><br>
+        <h3>Can upvote and downvote any post</h3><br>
+    </div><br>
+    <div class="container">
+        <form action="/" method="POST">
+            <div class="form-group">
+                <textarea class="form-control" minlength="10" name="post" id="" cols="30" rows="10" placeholder="Start typing here.." required></textarea>
+            </div><br>
+            <div class="form-group text-center">
+                <input class="btn btn-primary" type="submit" value="DONE">
+            </div>
+        </form>
+    </div>
+    <div class="post container bg-dark text-white pt-2 pb-2">
+        <div class="voting">
+            <div class="text-center pt-1 pb-1">
+                <button class="btn btn-primary">&#8710;</button>
+            </div>
+            <div class="text-center pt-1 pb-1">123</div>
+            <div class="text-center pt-1 pb-1">
+                <button class="btn btn-primary">&#8711;</button>
+            </div>
+        </div>
+        <div class="matter">
+            <div class="who ml-3">sashbros posted</div>
+            <div class="what ml-3">Hello there my efijpm</div>
+        </div>
+    </div>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>

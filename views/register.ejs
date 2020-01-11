@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <title>Register</title>
+</head>
+<body>
+    <h1>Register</h1>
+    <form action="/register" method="post">
+        <div class="form-group">
+            <input type="text" name="username" class="form-control" placeholder="Username" minlength="5" required>
+        </div>
+        <div class="form-group">
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password" minlength="5" required>
+        </div>
+        <div class="form-group">
+            <input type="password" id="cnfpassword" name="cnfpassword" class="form-control" placeholder="Password" minlength="5" required>
+            <span id="message"></span>
+        </div>
+        <div class="form-group text-center">
+            <input class="btn btn-primary" type="submit" value="Register">
+        </div>
+    </form>    
+    <a href="/login">LOGIN</a>
+
+
+
+
+
+
+    
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script>
+        $('#password, #cnfpassword').on('keyup', function () {
+            if ($('#password').val() === "")
+                $('#message').html('');
+            else if ($('#password').val() === $('#cnfpassword').val())
+                $('#message').html('Matching').css('color', 'green');
+            else
+                $('#message').html('Not Matching').css('color', 'red');
+        });
+    </script>
+</body>
+</html>

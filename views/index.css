@@ -1,0 +1,22 @@
+.post {
+    display: flex;
+    flex-direction: row;
+}
+.voting {
+    flex: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.matter {
+    flex: 95%;
+    display: flex;
+    flex-direction: column;
+}
+.who {
+    font-weight: 300;
+    color: rgb(190, 190, 190);
+}
+.what { 
+    font-weight: 900;
+}

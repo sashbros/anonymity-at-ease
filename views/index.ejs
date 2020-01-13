@@ -10,9 +10,21 @@
     <title>Anonymity at Ease - sashbros</title>
 </head>
 <body>
+    <!-- right navbar -->
+    <div id="mySidenav" class="sidenav">
+        <div class="mt-5 pt-5">
+            <div class="text-center">USERS</div>
+            <div class="text-center"><%= userCount %></div><br><br>
+            <div class="text-center">POSTS</div>
+            <div class="text-center"><%= postCount %></div><br><br>
+            <div class="text-center text-white" style="cursor:pointer" class="closebtn" onclick="closeNav()">&#8829;</div>
+        </div>
+    </div>
+    <!-- end of right navbar -->
     <div class="bg-primary fixed-top pt-3">
         <form action="/logout" method="POST">
             <div class="form-group text-right text-white mr-4">
+                <span class="mr-2" style="font-size: 20px;cursor:pointer" onclick="openNav()">&#8828;</span>
                 <label class="mr-2">Hello, <%= name %></label>
                 <input class="btn btn-outline-warning btn-sm" type="submit" value="Logout">
             </div>
@@ -36,15 +48,51 @@
         <% for (var i = 0; i < data.length; i++) { %>
         
         <div class="post container bg-dark text-white pt-2 pb-2 mt-5 mb-5">
-            <div class="voting">
-                <div class="text-center pt-1 pb-1">
-                    <button class="btn btn-success">&#8710;</button>
+
+            <% var hide=0 %>
+            <% for (var j = 0; j < upvoteData.length; j++) { %>
+                <% if (upvoteData[j].username === name && upvoteData[j].pid === data[i].pid) { %>
+                    <% hide=1 %>
+                <% } %>
+            <% } %>
+
+            
+            <% if (hide==1) { %>
+                <div class="voting">
+                    <div class="text-center pt-1 pb-1">
+                        <form action="/upvote" method="POST">
+                            <input class="" type="hidden" name="upvoteText", value= <%= data[i].pid %> >
+                            <button class="btn btn-success invisible">&#8710;</button>
+                        </form>
+                    </div>
+                    <div class="text-center pt-1 pb-1"><%= data[i].upvotes - data[i].downvotes %></div>
+                    <div class="text-center pt-1 pb-1">
+                        <form action="/downvote" method="POST">
+                            <input class="" type="hidden" name="downvoteText", value= <%= data[i].pid %> >
+                            <button class="btn btn-success invisible">&#8711;</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="text-center pt-1 pb-1"><%= data[i].upvotes - data[i].downvotes %></div>
-                <div class="text-center pt-1 pb-1">
-                    <button class="btn btn-success">&#8711;</button>
+            <% } else { %>
+                <div class="voting">
+                    <div class="text-center pt-1 pb-1">
+                        <form action="/upvote" method="POST">
+                            <input class="" type="hidden" name="upvoteText", value= <%= data[i].pid %> >
+                            <button class="btn btn-success">&#8710;</button>
+                        </form>
+                    </div>
+                    <div class="text-center pt-1 pb-1"><%= data[i].upvotes - data[i].downvotes %></div>
+                    <div class="text-center pt-1 pb-1">
+                        <form action="/downvote" method="POST">
+                            <input class="" type="hidden" name="downvoteText", value= <%= data[i].pid %> >
+                            <button class="btn btn-success">&#8711;</button>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            <% } %>
+            
+
+
             <div class="matter">
                 <div class="who ml-3">au/<%= data[i].username %> posted</div>
                 <div class="what ml-3"><%= data[i].p_des %></div>
@@ -62,5 +110,24 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script>
+        $(window).scroll(function() {
+            sessionStorage.scrollTop = $(this).scrollTop();
+        });
+
+        $(document).ready(function() {
+            if (sessionStorage.scrollTop != "undefined") {
+                $(window).scrollTop(sessionStorage.scrollTop);
+            }
+        });
+
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "100vw";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
 </body>
 </html>

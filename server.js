@@ -39,14 +39,41 @@ app.get("/", function(req, res) {
             }
             else {
                 console.log("Connected");
-                tempConn.query("select p.p_des, u.username, p.upvotes, p.downvotes from posts p join users u on u.uid = p.by_uid order by p.pid desc;", function(err, rows, fields) {
-                    tempConn.release();
+                tempConn.query("select u.uid, p.pid, p.p_des, u.username, p.upvotes, p.downvotes from posts p join users u on u.uid = p.by_uid order by p.pid desc;", function(err, rows, fields) {
+                    //tempConn.release();
                     if (err) {
                         console.log("Error in search all posts query");
                     }
                     else {
                         console.log("search all posts successful");
-                        res.render("index.ejs", {name: req.session.username, data: rows});
+                        tempConn.query("select u.username, up.pid from upvotes up join users u on u.uid = up.uid", function(err, upvoteRows, fields) {
+                            // tempConn.release();
+                            if (err) {
+                                console.log("Error in selecting from upvotes query");
+                            }
+                            else {
+                                console.log("selecting from upvotes successful");
+                                tempConn.query("select (select count(uid) from users) as userCount, (select count(pid) from posts) as postCount from dual", function(err, countRows, fields) {
+                                    tempConn.release();
+                                    if (err) {
+                                        console.log("Error in count users-post query");
+                                    }
+                                    else {
+                                        console.log("count users-post successful");
+                                        var userCount = countRows[0].userCount;
+                                        var postCount = countRows[0].postCount;
+                                        res.render("index.ejs", {name: req.session.username, data: rows, upvoteData: upvoteRows, userCount: userCount, postCount: postCount});
+                                    }
+                                });
+
+
+                                //res.render("index.ejs", {name: req.session.username, data: rows, upvoteData: upvoteRows});
+                            }
+
+                        });
+
+
+                        //res.render("index.ejs", {name: req.session.username, data: rows});
                     }
                 });
             }
@@ -186,6 +213,97 @@ app.post('/logout', function(req, res) {
 
 app.get('/posted', function(req, res) {
     res.redirect("/");
+});
+
+app.post('/upvote', function(req, res) {
+    var pid = req.body.upvoteText;
+    var uid;
+
+    pool.getConnection(function(err, tempConn) {
+        if (err) {
+            tempConn.release();
+            console.log("Error in connecting");
+        }
+        else {
+            console.log("Connected");
+            tempConn.query("update posts set upvotes=upvotes+1 where pid=?", [pid], function(err, rows, fields) {
+                // tempConn.release();
+                if (err) {
+                    console.log("Error in upvoting query");
+                }
+                else {
+                    console.log("upvoting successful in posts table");
+                    tempConn.query("select uid from users where username=?", [req.session.username], function(err, rows, fields) {
+                        if (err) {
+                            console.log("Error in retreiving uid");
+                        }
+                        else {
+                            console.log("retreiving uid successful");
+                            uid = rows[0].uid;
+                            tempConn.query("insert into upvotes values (?, ?)", [uid, pid], function(err, rows, fields) {
+                                tempConn.release();
+                                if (err) {
+                                    console.log("Error in adding upvotes");
+                                }
+                                else {
+                                    console.log("adding in upvotes successful");
+                                    res.redirect("back");
+                                }
+                            });
+                        }
+                    });
+
+                }
+            });
+        }
+    });
+
+});
+
+
+app.post('/downvote', function(req, res) {
+    var pid = req.body.downvoteText;
+    var uid;
+
+    pool.getConnection(function(err, tempConn) {
+        if (err) {
+            tempConn.release();
+            console.log("Error in connecting");
+        }
+        else {
+            console.log("Connected");
+            tempConn.query("update posts set downvotes=downvotes+1 where pid=?", [pid], function(err, rows, fields) {
+                // tempConn.release();
+                if (err) {
+                    console.log("Error in downvoting query");
+                }
+                else {
+                    console.log("downvoting successful in posts table");
+                    tempConn.query("select uid from users where username=?", [req.session.username], function(err, rows, fields) {
+                        if (err) {
+                            console.log("Error in retreiving uid");
+                        }
+                        else {
+                            console.log("retreiving uid successful");
+                            uid = rows[0].uid;
+                            tempConn.query("insert into upvotes values (?, ?)", [uid, pid], function(err, rows, fields) {
+                                tempConn.release();
+                                if (err) {
+                                    console.log("Error in adding downvotes");
+                                }
+                                else {
+                                    console.log("adding in downvotes successful");
+                                    res.redirect("back");
+                                }
+                            });
+                        }
+                    });
+
+                }
+            });
+        }
+    });
+
 });
 
 

@@ -32,7 +32,28 @@ app.get("/", function(req, res) {
     }
     else {
 
-        res.render("index.ejs", {name: req.session.username});
+        pool.getConnection(function(err, tempConn) {
+            if (err) {
+                tempConn.release();
+                console.log("Error in connecting");
+            }
+            else {
+                console.log("Connected");
+                tempConn.query("select p.p_des, u.username, p.upvotes, p.downvotes from posts p join users u on u.uid = p.by_uid order by p.pid desc;", function(err, rows, fields) {
+                    tempConn.release();
+                    if (err) {
+                        console.log("Error in search all posts query");
+                    }
+                    else {
+                        console.log("search all posts successful");
+                        res.render("index.ejs", {name: req.session.username, data: rows});
+                    }
+                });
+            }
+        });
+
+
+        
     }
 });
 
@@ -53,12 +74,13 @@ app.post("/", function(req, res) {
                 }
                 else {
                     console.log("post addition successful");
+                    res.redirect('/posted');
                 }
             });
         }
     });
 
-    res.send(post);
+    
 });
 
 
@@ -161,6 +183,10 @@ app.post('/logout', function(req, res) {
     res.redirect("/login");
 });
 
+
+app.get('/posted', function(req, res) {
+    res.redirect("/");
+});
 
 
 

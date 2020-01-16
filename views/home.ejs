@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAERERAAAAABEREREQAAABEREAERAAAAEREAABEAAAAREAAAEQAAABEQAAERAAAAERAAERAAAAAAAAAREAAAAAAAAREAAAAAAAAREAARAAAAAREAABEAAAABEQAAEQAAAAERAAERAAAAAREQERAAAAABEREREAAAAAABEREAAADgfwAAgD8AAAY/AAAPPwAAHz8AAB4/AAAcfwAA/H8AAPj/AADxzwAA488AAOPPAADjjwAA4R8AAOAfAAD4PwAA" rel="icon" type="image/x-icon" />
     <link rel="stylesheet" href="/index.css">
-    <title>Anonymity at Ease - sashbros</title>
+    <title>Home - Anonymity at Ease</title>
 </head>
 <body>
     <!-- loader -->
@@ -30,28 +30,16 @@
             <div class="collapse navbar-collapse" id="collapsibleNavId">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item text-white">
-                        <div class="pt-3 mr-4">
-                            <input type="submit" class="btn btn-primary btn-sm" onclick="openNav()" value="Stats">
-                        </div>
-                    </li>
-                    <li class="nav-item text-white">
-                        <form action="/polls" method="POST">
+                        <form action="/warzone" method="POST">
                             <div class="pt-3 form-group text-white mr-4">
-                                <input class="btn btn-primary btn-sm" type="submit" value="Polls">
-                            </div>
-                        </form>
-                    </li>
-                    <li class="nav-item text-white">
-                        <form action="/home" method="POST">
-                            <div class="pt-3 form-group text-white mr-4">
-                                <input class="btn btn-primary btn-sm" type="submit" value="Home">
+                                <input class="btn btn-primary btn-sm" type="submit" value="Return to Warzone">
                             </div>
                         </form>
                     </li>
                     <li class="nav-item">
                         <form action="/logout" method="POST">
                             <div class="ml-2 pt-3 form-group text-white">
-                                <label class="mr-4">Hello, <%= name %></label>
+                                <label class="mr-4">Welcome home, <%= name %></label>
                                 <input class="btn btn-outline-warning btn-sm" type="submit" value="Logout">
                             </div>
                         </form>
@@ -64,50 +52,24 @@
     </nav>
     <!-- navbar end -->
 
-    <!-- right navbar -->
-    <div id="mySidenav" class="sidenav">
-        <div class="mt-5 pt-5">
-            <div class="text-center">USERS</div>
-            <div class="text-center"><%= userCount %></div><br><br>
-            <div class="text-center">POSTS</div>
-            <div class="text-center"><%= postCount %></div><br><br>
-            <div class="text-center text-white" style="cursor:pointer" class="closebtn" onclick="closeNav()">&#8829;</div>
-        </div>
+    <div class="mt-5 pt-5 container">
+        <h3>See your personal stats,</h3>
+        <h1>au/<%= name %></h1>
     </div>
-    <!-- end of right navbar -->
-
-
-
-    <div class="mt-5 pt-5 container text-center">
-        <h1>Here's to some controlled Anonymity</h1><br>
-        <h3>Can upvote and downvote any post</h3><br>
-    </div><br>
-
-
 
     <div class="container">
-        <form action="/" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <textarea class="form-control" minlength="7" name="post" id="" cols="25" rows="5" placeholder="Enter your thoughts.." required></textarea>
-            </div>
-            <div class="form-group">
-                <label class="form-control imgLbl" for="file">
-                    <i class="material-icons">
-                        add_photo_alternate
-                    </i>
-                </label>
-                <input type="file" accept="image/*" class="imgUpl" name="image" id="file">
-            </div>
-            <div class="form-group text-center">
-                <input class="btn btn-outline-danger" type="submit" value="POST">
-            </div>
-        </form>
+        <table>
+            <tr>
+                <th>EXPERIENCE POINTS</th>
+                <th>REPUTATION PONTS</th>
+            </tr>
+            <tr>
+                <td><%= ptsrows[0].exp_points %></td>
+                <td><%= ptsrows[0].rep_points %></td>
+            </tr>
+        </table>
     </div>
-    <!-- image display -->
-    <div class="mt-4 text-center container">
-        <img class="img-fluid dispImg ajaDisp" src="" alt="">
-    </div>
-    <!-- image display end -->
+
     <div class="allPosts">
         <% for (var i = 0; i < data.length; i++) { %>
         
@@ -170,6 +132,16 @@
 
         <% } %>
     </div>
+
+
+
+
+
+
+
+
+
+
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

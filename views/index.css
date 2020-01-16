@@ -60,3 +60,40 @@
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
   }
+
+.imgUpl {
+  visibility: hidden;
+}
+.imgLbl {
+  color: white;
+  height: 40px;
+  width: 40px;
+  background-color: rgb(0, 100, 255);
+  position: absolute;
+  margin: auto;
+
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.dispImg {
+  max-width: 600px;
+  border-radius: 5px;
+}
+@media (max-width: 1000px) {
+  .dispImg {
+    max-width: 350px;
+  }
+}
+@media (max-width: 450px) {
+  .dispImg {
+    max-width: 250px;
+  }
+}
+@media (max-width: 350px) {
+  .dispImg {
+    max-width: 150px;
+  }
+}

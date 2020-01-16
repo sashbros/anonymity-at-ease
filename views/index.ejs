@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAERERAAAAABEREREQAAABEREAERAAAAEREAABEAAAAREAAAEQAAABEQAAERAAAAERAAERAAAAAAAAAREAAAAAAAAREAAAAAAAAREAARAAAAAREAABEAAAABEQAAEQAAAAERAAERAAAAAREQERAAAAABEREREAAAAAABEREAAADgfwAAgD8AAAY/AAAPPwAAHz8AAB4/AAAcfwAA/H8AAPj/AADxzwAA488AAOPPAADjjwAA4R8AAOAfAAD4PwAA" rel="icon" type="image/x-icon" />
     <link rel="stylesheet" href="/index.css">
     <title>Anonymity at Ease - sashbros</title>
 </head>
@@ -34,16 +36,32 @@
         <h1>Here's to some controlled Anonymity</h1><br>
         <h3>Can upvote and downvote any post</h3><br>
     </div><br>
+
+    
+
     <div class="container">
-        <form action="/" method="POST">
+        <form action="/" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <textarea class="form-control" minlength="7" name="post" id="" cols="25" rows="5" placeholder="Enter your thoughts.." required></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-control imgLbl" for="file">
+                    <i class="material-icons">
+                        add_photo_alternate
+                    </i>
+                </label>
+                <input type="file" accept="image/*" class="imgUpl" name="image" id="file">
             </div>
             <div class="form-group text-center">
                 <input class="btn btn-outline-danger" type="submit" value="POST">
             </div>
         </form>
     </div>
+    <!-- image display -->
+    <div class="mt-4 text-center container">
+        <img class="img-fluid dispImg ajaDisp" src="" alt="">
+    </div>
+    <!-- image display end -->
     <div class="allPosts">
         <% for (var i = 0; i < data.length; i++) { %>
         
@@ -96,6 +114,11 @@
             <div class="matter">
                 <div class="who ml-3">au/<%= data[i].username %> posted</div>
                 <div class="what ml-3"><%= data[i].p_des %></div>
+                <% if (data[i].p_image !== null) { %>
+                    <div class="text-center">
+                        <img class="mt-3 mb-3 img-fluid dispImg" src= <%= data[i].p_image %> alt="">
+                    </div>
+                <% } %>
             </div>
         </div>
 
@@ -127,6 +150,27 @@
 
         function closeNav() {
             document.getElementById("mySidenav").style.width = "0";
+        }
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    $('.ajaDisp').attr('src', e.target.result);
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $(".imgUpl").change(function() {
+            readURL(this);
+        });
+
+        function imageExists(url, callback) {
+            var img = new Image();
+            img.onload = function() { callback(true); };
+            img.onerror = function() { callback(false); };
+            img.src = url;
         }
     </script>
 </body>

@@ -4,15 +4,20 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
 const mysql = require('mysql');
+const fileUpload = require('express-fileupload');
+const uuidv1 = require('uuid/v1');
 
 const app = express();
 app.set('view-engine', 'ejs');
 app.use(express.static(__dirname + '/views')); //for the css files
+app.use(express.static(__dirname + '/images')); //for images
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieSession({
     name: 'session',
     keys: ['key1', 'key2']
 }));
+app.use(fileUpload());
+
 //creating pool connection
 const pool = mysql.createPool({
     connectionLimit: 20,
@@ -22,11 +27,12 @@ const pool = mysql.createPool({
     database: 'anon'
 });
 
-
+// var ajaxPost = "";
 // const users = []
 
 app.get("/", function(req, res) {
     console.log(req.session.username);
+    //var image = "s.jpg";
     if (req.session.username == undefined) {
         res.redirect("/login");
     }
@@ -39,7 +45,7 @@ app.get("/", function(req, res) {
             }
             else {
                 console.log("Connected");
-                tempConn.query("select u.uid, p.pid, p.p_des, u.username, p.upvotes, p.downvotes from posts p join users u on u.uid = p.by_uid order by p.pid desc;", function(err, rows, fields) {
+                tempConn.query("select u.uid, p.pid, p.p_des, u.username, p.upvotes, p.downvotes, p.p_image from posts p join users u on u.uid = p.by_uid where p.upvotes-p.downvotes>-10 order by p.pid desc;", function(err, rows, fields) {
                     //tempConn.release();
                     if (err) {
                         console.log("Error in search all posts query");
@@ -86,6 +92,21 @@ app.get("/", function(req, res) {
 
 app.post("/", function(req, res) {
     var post = req.body.post;
+    var image;
+    if (req.files) {
+        console.log("This is req files" + req.files);
+        image = uuidv1() + req.files.image.name;
+        req.files.image.mv('./images/' + image, function(err) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                console.log("image Uploaded to images/");
+            }
+        });
+    }
+    console.log("This is image variable" + image);
+    // ajaxPost = post;
 
     pool.getConnection(function(err, tempConn) {
         if (err) {
@@ -94,7 +115,7 @@ app.post("/", function(req, res) {
         }
         else {
             console.log("Connected");
-            tempConn.query("insert into posts(p_des, by_uid) values(?, (select uid from users where username = ?))", [post, req.session.username], function(err, rows, fields) {
+            tempConn.query("insert into posts(p_des, by_uid, p_image) values(?, (select uid from users where username = ?), ?)", [post, req.session.username, image], function(err, rows, fields) {
                 tempConn.release();
                 if (err) {
                     console.log("Error in post addition query");
@@ -306,6 +327,9 @@ app.post('/downvote', function(req, res) {
 
 });
 
+// app.get('/thisisajaxcallurl', function(req, res) {
+//     res.send({ajaxPost: ajaxPost});
+// });
 
 
 app.listen(3000, function() {

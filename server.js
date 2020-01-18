@@ -403,8 +403,15 @@ app.post('/warzone', function(req, res) {
     res.redirect('/');
 });
 
+
+
 app.get('/polls', function(req, res) {
-    res.render('polls.ejs');
+    if (req.session.username == undefined) {
+        res.redirect("/login");
+    }
+    else {
+        res.render('polls.ejs', {name: req.session.username});
+    }
 });
 app.post('/polls', function(req, res) {
     res.redirect('/polls');

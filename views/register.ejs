@@ -6,10 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/index.css">
     <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAERERAAAAABEREREQAAABEREAERAAAAEREAABEAAAAREAAAEQAAABEQAAERAAAAERAAERAAAAAAAAAREAAAAAAAAREAAAAAAAAREAARAAAAAREAABEAAAABEQAAEQAAAAERAAERAAAAAREQERAAAAABEREREAAAAAABEREAAADgfwAAgD8AAAY/AAAPPwAAHz8AAB4/AAAcfwAA/H8AAPj/AADxzwAA488AAOPPAADjjwAA4R8AAOAfAAD4PwAA" rel="icon" type="image/x-icon" />
     <title>Register</title>
 </head>
 <body>
+    <!-- loader -->
+    <div class="loader">
+        <img src="/loader.gif" alt="" />
+    </div>
+    <!-- loader end -->
+
+
     <h1>Register</h1>
     <form action="/register" method="post">
         <div class="form-group">
@@ -30,7 +38,11 @@
 
 
 
-
+    <!-- footer -->
+    <div class="footer">
+        Made with &#10084; by Sarvagna Shukla
+    </div>
+    <!-- footer end -->
 
 
     
@@ -50,6 +62,11 @@
                 $('#message').html('Matching').css('color', 'green');
             else
                 $('#message').html('Not Matching').css('color', 'red');
+        });
+
+        window.addEventListener("load", function () {
+            const loader = document.querySelector(".loader");
+            loader.className += " hidden"; // class "loader hidden"
         });
     </script>
 </body>

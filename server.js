@@ -143,6 +143,7 @@ app.get('/login', function(req, res) {
 });
 app.post('/login', function(req, res) {
     var username = req.body.username;
+    username = username.toLowerCase();
     var password = req.body.password;
     password = sha1(password);
     // if (users.find(item => item.username === username).password === password) {
@@ -194,6 +195,7 @@ app.get('/register', function(req, res) {
 });
 app.post('/register', function(req, res) {
     var username = req.body.username;
+    username = username.toLowerCase();
     var password = req.body.password;
     var cnfpassword = req.body.cnfpassword;
     if (password !== cnfpassword)
@@ -330,7 +332,22 @@ app.post('/downvote', function(req, res) {
 
 });
 
-app.get('/home', function(req, res) {
+// app.get('/users/:username', function(req, res) {
+//     if (req.session.username == undefined) {
+//         res.redirect("/login");
+//     }
+//     else if (req.session.username === req.params.username) {
+//         res.redirect('/home');
+//     }
+//     else {
+//         res.send('Welcome to ' + req.params.username + 's profile');
+//     }
+// });
+app.post('/users/:username', function(req, res) {
+    res.redirect('/users/' + req.params.username);
+});
+
+app.get('/users/:username', function(req, res) {
     if (req.session.username == undefined) {
         res.redirect("/login");
     }
@@ -342,65 +359,81 @@ app.get('/home', function(req, res) {
             }
             else {
                 console.log("Connected");
-                tempConn.query("select 2*count(u.username) as exp_points, 2*count(u.username)+sum(p.upvotes-2*p.downvotes) as rep_points from users u join posts p on u.uid=p.by_uid where username=?", [req.session.username], function(err, ptsrows, fields) {
-                    //tempConn.release();
+                tempConn.query("select uid from users where username=?", [req.params.username], function(err, userFindRow, fields) {
                     if (err) {
-                        console.log("Error in exp and rep pts query");
+                        console.log("error in finding user at home query")
                     }
                     else {
-                        console.log("exp and rep pts successful");
-                        //res.render('home.ejs', {name: req.session.username, data: rows});
-                        tempConn.query("select u.uid, p.pid, p.p_des, u.username, p.upvotes, p.downvotes, p.p_image from posts p join users u on u.uid = p.by_uid where p.upvotes-p.downvotes>-10 and u.username=? order by p.pid desc;", [req.session.username], function(err, rows, fields) {
-                            //tempConn.release();
-                            if (err) {
-                                console.log("Error in search all posts query");
-                            }
-                            else {
-                                console.log("search all posts successful");
-                                tempConn.query("select u.username, up.pid from upvotes up join users u on u.uid = up.uid", function(err, upvoteRows, fields) {
-                                    // tempConn.release();
-                                    if (err) {
-                                        console.log("Error in selecting from upvotes query");
-                                    }
-                                    else {
-                                        console.log("selecting from upvotes successful");
-                                        tempConn.query("select (select count(uid) from users) as userCount, (select count(pid) from posts) as postCount from dual", function(err, countRows, fields) {
-                                            tempConn.release();
-                                            if (err) {
-                                                console.log("Error in count users-post query");
-                                            }
-                                            else {
-                                                console.log("count users-post successful");
-                                                var userCount = countRows[0].userCount;
-                                                var postCount = countRows[0].postCount;
-                                                res.render("home.ejs", {name: req.session.username,ptsrows: ptsrows, data: rows, upvoteData: upvoteRows, userCount: userCount, postCount: postCount});
-                                            }
-                                        });
-        
-        
-                                        
-                                    }
-        
-                                });
-        
-        
-                               
-                            }
-                        });
-
-
-
-
+                        if (userFindRow.length == 0) {
+                            res.render('pageNotFound.ejs', {name: req.session.username});
+                        }
+                        else {
+                            tempConn.query("select 2*count(u.username) as exp_points, 2*count(u.username)+sum(p.upvotes-2*p.downvotes) as rep_points from users u join posts p on u.uid=p.by_uid where username=?", [req.params.username], function(err, ptsrows, fields) {
+                                //tempConn.release();
+                                if (err) {
+                                    console.log("Error in exp and rep pts query");
+                                }
+                                else {
+                                    console.log("exp and rep pts successful");
+                                    //res.render('home.ejs', {name: req.session.username, data: rows});
+                                    tempConn.query("select u.uid, p.pid, p.p_des, u.username, p.upvotes, p.downvotes, p.p_image from posts p join users u on u.uid = p.by_uid where p.upvotes-p.downvotes>-10 and u.username=? order by p.pid desc;", [req.params.username], function(err, rows, fields) {
+                                        //tempConn.release();
+                                        if (err) {
+                                            console.log("Error in search all posts query");
+                                        }
+                                        else {
+                                            console.log("search all posts successful");
+                                            tempConn.query("select u.username, up.pid from upvotes up join users u on u.uid = up.uid", function(err, upvoteRows, fields) {
+                                                // tempConn.release();
+                                                if (err) {
+                                                    console.log("Error in selecting from upvotes query");
+                                                }
+                                                else {
+                                                    console.log("selecting from upvotes successful");
+                                                    tempConn.query("select (select count(uid) from users) as userCount, (select count(pid) from posts) as postCount from dual", function(err, countRows, fields) {
+                                                        tempConn.release();
+                                                        if (err) {
+                                                            console.log("Error in count users-post query");
+                                                        }
+                                                        else {
+                                                            console.log("count users-post successful");
+                                                            var userCount = countRows[0].userCount;
+                                                            var postCount = countRows[0].postCount;
+                                                            res.render("home.ejs", {name: req.session.username, pageName: req.params.username, ptsrows: ptsrows, data: rows, upvoteData: upvoteRows, userCount: userCount, postCount: postCount});
+                                                        }
+                                                    });
+                    
+                    
+                                                    
+                                                }
+                    
+                                            });
+                    
+                    
+                                           
+                                        }
+                                    });
+            
+            
+            
+            
+                                }
+                            });
+                        }
                     }
-                });
+                })
+    
+
+
+                
             }
         });
     }
     
 });
-app.post('/home', function(req, res) {
-    res.redirect('/home');
-});
+// app.post('/home', function(req, res) {
+//     res.redirect('/home');
+// });
 
 app.post('/warzone', function(req, res) {
     res.redirect('/');
@@ -420,6 +453,12 @@ app.post('/polls', function(req, res) {
     res.redirect('/polls');
 });
 
+
+
+app.use(function(req, res, next) {
+    // res.redirect('/');
+    res.render('pageNotFound.ejs', {name: req.session.username});
+  });
 app.listen(3000, function() {
     console.log("Server started on 3000");
 });

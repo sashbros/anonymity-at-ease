@@ -42,7 +42,7 @@
                         </form>
                     </li>
                     <li class="nav-item text-white">
-                        <form action="/home" method="POST">
+                        <form action="/users/<%= name %>" method="POST">
                             <div class="pt-3 form-group text-white mr-4">
                                 <input class="btn btn-primary btn-sm" type="submit" value="Home">
                             </div>
@@ -158,7 +158,7 @@
 
 
             <div class="matter">
-                <div class="who ml-3">au/<%= data[i].username %> posted</div>
+                <div class="who ml-3"><a href="/users/<%= data[i].username %>">au/<%= data[i].username %></a> posted</div>
                 <div class="what ml-3"><%= data[i].p_des %></div>
                 <% if (data[i].p_image !== null) { %>
                     <div class="text-center">

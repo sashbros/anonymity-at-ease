@@ -9,9 +9,9 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAERERAAAAABEREREQAAABEREAERAAAAEREAABEAAAAREAAAEQAAABEQAAERAAAAERAAERAAAAAAAAAREAAAAAAAAREAAAAAAAAREAARAAAAAREAABEAAAABEQAAEQAAAAERAAERAAAAAREQERAAAAABEREREAAAAAABEREAAADgfwAAgD8AAAY/AAAPPwAAHz8AAB4/AAAcfwAA/H8AAPj/AADxzwAA488AAOPPAADjjwAA4R8AAOAfAAD4PwAA" rel="icon" type="image/x-icon" />
     <link rel="stylesheet" href="/index.css">
-    <title>Home - Anonymity at Ease</title>
+    <title>Page Not Found - 404 Error</title>
 </head>
-<body>
+<body class="pagenotfound">
     <!-- loader -->
     <div class="loader">
         <img src="/loader.gif" alt="" />
@@ -39,7 +39,7 @@
                     <li class="nav-item">
                         <form action="/logout" method="POST">
                             <div class="ml-2 pt-3 form-group text-white">
-                                <label class="mr-4">Welcome home, <%= name %></label>
+                                <label class="mr-4"><%= name %>, its error 404</label>
                                 <input class="btn btn-outline-warning btn-sm" type="submit" value="Logout">
                             </div>
                         </form>
@@ -52,101 +52,25 @@
     </nav>
     <!-- navbar end -->
 
-    <div class="mt-5 pt-5 container">
-        <h3 class="what">au/<%= pageName %></h3>
-    </div>
-
-    <div class="container text-center">
-        <table class="table table-borderless">
-            <tr class="table-danger">
-                <th class="what">EXPERIENCE POINTS</th>
-                <th class="what">REPUTATION POINTS</th>
-            </tr>
-            <tr class="table-danger">
-                <td><%= ptsrows[0].exp_points %></td>
-                <td><%= ptsrows[0].rep_points %></td>
-            </tr>
-        </table>
-    </div>
-
-    <div class="allPosts">
-        <% for (var i = 0; i < data.length; i++) { %>
-        
-        <div class="post container bg-dark text-white pt-2 pb-2 mt-5 mb-5">
-
-            <% var hide=0 %>
-            <% for (var j = 0; j < upvoteData.length; j++) { %>
-                <% if (upvoteData[j].username === name && upvoteData[j].pid === data[i].pid) { %>
-                    <% hide=1 %>
-                <% } %>
-            <% } %>
-
-            
-            <% if (hide==1) { %>
-                <div class="voting">
-                    <div class="text-center pt-1 pb-1">
-                        <form action="/upvote" method="POST">
-                            <input class="" type="hidden" name="upvoteText", value= <%= data[i].pid %> >
-                            <button class="btn btn-success invisible">&#8710;</button>
-                        </form>
-                    </div>
-                    <div class="text-center pt-1 pb-1"><%= data[i].upvotes - data[i].downvotes %></div>
-                    <div class="text-center pt-1 pb-1">
-                        <form action="/downvote" method="POST">
-                            <input class="" type="hidden" name="downvoteText", value= <%= data[i].pid %> >
-                            <button class="btn btn-success invisible">&#8711;</button>
-                        </form>
-                    </div>
-                </div>
-            <% } else { %>
-                <div class="voting">
-                    <div class="text-center pt-1 pb-1">
-                        <form action="/upvote" method="POST">
-                            <input class="" type="hidden" name="upvoteText", value= <%= data[i].pid %> >
-                            <button class="btn btn-success">&#8710;</button>
-                        </form>
-                    </div>
-                    <div class="text-center pt-1 pb-1"><%= data[i].upvotes - data[i].downvotes %></div>
-                    <div class="text-center pt-1 pb-1">
-                        <form action="/downvote" method="POST">
-                            <input class="" type="hidden" name="downvoteText", value= <%= data[i].pid %> >
-                            <button class="btn btn-success">&#8711;</button>
-                        </form>
-                    </div>
-                </div>
-            <% } %>
-            
 
 
-            <div class="matter">
-                <div class="who ml-3">au/<%= data[i].username %> posted</div>
-                <div class="what ml-3"><%= data[i].p_des %></div>
-                <% if (data[i].p_image !== null) { %>
-                    <div class="text-center">
-                        <% var imageURL = "./../" + data[i].p_image %>
-                        <img class="mt-3 mb-3 img-fluid dispImg" src= <%= imageURL %> alt="no image">
-                    </div>
-                <% } %>
-            </div>
-        </div>
 
-        <% } %>
-    </div>
+
+
+
+
+
+    
 
 
     <button id="topBtn"><i class="fas fa-angle-double-up"></i></button>
 
+
     <!-- footer -->
-    <div class="footer">
+     <div class="footer">
         Made with &#10084; by Sarvagna Shukla
     </div>
     <!-- footer end -->
-
-
-
-
-
-
 
 
     <!-- jQuery library -->
@@ -222,5 +146,6 @@
             loader.className += " hidden"; // class "loader hidden"
         });
     </script>
+    
 </body>
 </html>

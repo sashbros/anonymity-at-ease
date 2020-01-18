@@ -17,6 +17,9 @@
     font-weight: 300;
     color: rgb(190, 190, 190);
 }
+.who a {
+  color: rgb(190, 190, 190);
+}
 .what { 
     font-weight: 900;
 }
@@ -153,4 +156,18 @@
 }
 #topBtn:focus {
   outline: none;
+}
+.pagenotfound {
+  background: url('/pagenotfound.jpg') no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  height: 100vh;
+}
+.comingsoon {
+  background: url('/comingsoon.png') no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  height: 100vh;
 }

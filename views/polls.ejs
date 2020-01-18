@@ -57,16 +57,19 @@
     </div>
 
 
+
+
+
+
+
+
+
+
+
     
 
 
-
-
-
-
-
-
-
+    <button id="topBtn"><i class="fas fa-angle-double-up"></i></button>
 
 
     <!-- footer -->
@@ -84,6 +87,10 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <!-- font awesome script -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
     <script>
         $(window).scroll(function() {
             sessionStorage.scrollTop = $(this).scrollTop();
@@ -93,6 +100,21 @@
             if (sessionStorage.scrollTop != "undefined") {
                 $(window).scrollTop(sessionStorage.scrollTop);
             }
+
+            //scroll to top code starts here
+            $(window).on('scroll', function() {
+                if($(this).scrollTop() > 40) {
+                    $('#topBtn').fadeIn();
+                }
+                else {
+                    $('#topBtn').fadeOut();
+                }
+            });
+
+            $('#topBtn').on('click', function() {
+                $('html, body').animate({scrollTop: 0}, 800);
+            });
+            // scroll to top code ends here
         });
 
         function openNav() {

@@ -6,6 +6,7 @@ const cookieSession = require("cookie-session");
 const mysql = require('mysql');
 const fileUpload = require('express-fileupload');
 const uuidv1 = require('uuid/v1');
+const sha1 = require('sha1');
 
 const app = express();
 app.set('view-engine', 'ejs');
@@ -143,6 +144,7 @@ app.get('/login', function(req, res) {
 app.post('/login', function(req, res) {
     var username = req.body.username;
     var password = req.body.password;
+    password = sha1(password);
     // if (users.find(item => item.username === username).password === password) {
     //     req.session.username = username;
     //     res.redirect('/');
@@ -209,6 +211,7 @@ app.post('/register', function(req, res) {
             }
             else {
                 console.log("Connected");
+                password = sha1(password);
                 tempConn.query("insert into users(username, password) values(?, ?)", [username, password], function(err, rows, fields) {
                     tempConn.release();
                     if (err) {

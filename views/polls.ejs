@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/index.css">
     <title>Polls - Anonymity at Ease</title>
 </head>
-<body class="comingsoon">
+<body>
     <!-- loader -->
     <div class="loader">
         <img src="/loader.gif" alt="" />
@@ -54,12 +54,26 @@
 
 
 
-
-
-
-
-
-
+    <div class="mt-5 pt-5 container">
+        <h3 class="what">au/<%= name %>,</h3>
+        <h4 class="whoaf">mark your presence</h4>
+    </div>
+    <br><br>
+    <div class="container">
+        <h1 class="whoaf">Create a POLL</h1><br>
+        <form action="/pollcreated" method="post">
+            <div class="form-group">
+                <input type="text" name="question" class="form-control" placeholder="Write your question.." minlength="5" required>
+            </div>
+            <div>
+                <div class="whoaf">this will have 2 options</div>
+                <div class="whoaf"><i><b>YES</b></i> and <i><b>NO</b></i></div>
+            </div>
+            <div class="form-group text-center">
+                <input class="btn btn-outline-primary" type="submit" value="Create Poll">
+            </div>
+        </form><br>
+    </div>
 
 
 

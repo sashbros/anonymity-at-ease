@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/index.css">
     <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAERERAAAAABEREREQAAABEREAERAAAAEREAABEAAAAREAAAEQAAABEQAAERAAAAERAAERAAAAAAAAAREAAAAAAAAREAAAAAAAAREAARAAAAAREAABEAAAABEQAAEQAAAAERAAERAAAAAREQERAAAAABEREREAAAAAABEREAAADgfwAAgD8AAAY/AAAPPwAAHz8AAB4/AAAcfwAA/H8AAPj/AADxzwAA488AAOPPAADjjwAA4R8AAOAfAAD4PwAA" rel="icon" type="image/x-icon" />
-    <title>Register</title>
+    <title>Register - sashy</title>
 </head>
 <body>
     <!-- loader -->
@@ -17,25 +17,47 @@
     </div>
     <!-- loader end -->
 
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-sm navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">SASHY</a>
+        </div>
+    </nav>
+    <!-- navbar end -->
 
-    <h1>Register</h1>
-    <form action="/register" method="post">
-        <div class="form-group">
-            <input type="text" name="username" class="form-control" placeholder="Username" minlength="5" required>
+    <div class="container pt-5 mt-5">
+        <div class="text-center row">
+            <div class="col-sm-12 col-lg-6">
+                <h1>Register</h1><br>
+                <form action="/register" method="post">
+                    <div class="form-group">
+                        <input type="text" name="username" class="form-control" placeholder="Username.. this is your new identity" minlength="5" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Password" minlength="5" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="cnfpassword" name="cnfpassword" class="form-control" placeholder="Password" minlength="5" required>
+                        <span id="message"></span>
+                    </div>
+                    <div class="form-group text-center">
+                        <input class="btn btn-outline-primary" type="submit" value="Register">
+                    </div>
+                </form><br>
+                <a class="registerhere" href="/login">Login Here</a>
+            </div>
+            <div class="mt-5 mb-5 col-sm-12 col-lg-6">
+                <h3 class="what">post whatever you like and no one will know your identity</h3><br>
+                <h4 class="whoaf">BUT, respect is now mandatory</h4><br>
+                <h4 class="whoaf">each post can be given positive and negative votes</h4><br>
+                <h4 class="whoaf">post will be deleted if it gets less than "-10" votes !!!</h4><br>
+                <h4 class="whoaf">now that's exciting</h4><br>
+                <h4 class="whoaf"><b>your opinion matters</b> to us</h4><br>
+                <h4 class="whoaf">and so does your <b>anonymity</b></h4><br>
+                <h2 class="what">be your own god !!</h2>
+            </div>
         </div>
-        <div class="form-group">
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password" minlength="5" required>
-        </div>
-        <div class="form-group">
-            <input type="password" id="cnfpassword" name="cnfpassword" class="form-control" placeholder="Password" minlength="5" required>
-            <span id="message"></span>
-        </div>
-        <div class="form-group text-center">
-            <input class="btn btn-primary" type="submit" value="Register">
-        </div>
-    </form>    
-    <a href="/login">LOGIN</a>
-
+    </div>
 
 
     <!-- footer -->

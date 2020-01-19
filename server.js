@@ -454,6 +454,109 @@ app.post('/polls', function(req, res) {
     res.redirect('/polls');
 });
 
+app.post('/pollcreated', function(req, res) {
+    if (req.session.username == undefined) {
+        res.redirect("/login");
+    }
+    else {
+        var question = req.body.question;
+        pool.getConnection(function(err, tempConn) {
+            if (err) {
+                tempConn.release();
+                console.log("Error in connecting");
+            }
+            else {
+                console.log("Connected");
+                tempConn.query("insert into polls(poll_ques) values(?)", [question], function(err, rows, fields) {
+                    tempConn.release();
+                    if (err) {
+                        console.log("error in poll insertion query");
+                    }
+                    else {
+                        console.log("poll insertion successful");
+                        res.redirect("/question/" + question);
+                    }
+                });
+            }
+        
+        });
+        
+    }
+    
+});
+app.get('/question/:question', function(req, res) {
+    if (req.session.username == undefined) {
+        res.redirect("/login");
+    }
+    else {
+        var question = req.params.question;
+        res.send("this is the question: " + question);
+    }
+});
+
+
+
+
+app.get('/sortbyvotes', function(req, res) {
+    console.log(req.session.username);
+    //var image = "s.jpg";
+    if (req.session.username == undefined) {
+        res.redirect("/login");
+    }
+    else {
+
+        pool.getConnection(function(err, tempConn) {
+            if (err) {
+                tempConn.release();
+                console.log("Error in connecting");
+            }
+            else {
+                console.log("Connected");
+                tempConn.query("select u.uid, p.pid, p.p_des, u.username, p.upvotes, p.downvotes, p.p_image from posts p join users u on u.uid = p.by_uid where p.upvotes-p.downvotes>-10 order by p.upvotes-p.downvotes desc;", function(err, rows, fields) {
+                    //tempConn.release();
+                    if (err) {
+                        console.log("Error in search all posts query");
+                    }
+                    else {
+                        console.log("search all posts successful");
+                        tempConn.query("select u.username, up.pid from upvotes up join users u on u.uid = up.uid", function(err, upvoteRows, fields) {
+                            // tempConn.release();
+                            if (err) {
+                                console.log("Error in selecting from upvotes query");
+                            }
+                            else {
+                                console.log("selecting from upvotes successful");
+                                tempConn.query("select (select count(uid) from users) as userCount, (select count(pid) from posts) as postCount from dual", function(err, countRows, fields) {
+                                    tempConn.release();
+                                    if (err) {
+                                        console.log("Error in count users-post query");
+                                    }
+                                    else {
+                                        console.log("count users-post successful");
+                                        var userCount = countRows[0].userCount;
+                                        var postCount = countRows[0].postCount;
+                                        res.render("sortbyvotes.ejs", {name: req.session.username, data: rows, upvoteData: upvoteRows, userCount: userCount, postCount: postCount});
+                                    }
+                                });
+
+
+                                //res.render("index.ejs", {name: req.session.username, data: rows, upvoteData: upvoteRows});
+                            }
+
+                        });
+
+
+                        //res.render("index.ejs", {name: req.session.username, data: rows});
+                    }
+                });
+            }
+        });
+
+
+        
+    }
+});
+
 
 
 app.use(function(req, res, next) {

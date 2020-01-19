@@ -23,6 +23,10 @@
 .what { 
     font-weight: 900;
 }
+.whoaf {
+  font-weight: 300;
+  color: rgb(0, 0, 0);
+}
 .invisible {
     visibility: hidden;
 }
@@ -198,5 +202,20 @@
   height: 0;
 }
 .registerhere:hover::before {
-  height: 380%;
+  height: 430%;
+}
+
+.sortbyvotes {
+  text-decoration: none;
+  color: green;
+  font-weight: 400;
+  font-size: 20px;
+  border: 1px solid green;
+  padding: 5px 5px;
+  border-radius: 5px;
+}
+.sortbyvotes:hover {
+  text-decoration: none;
+  color: white;
+  background: green;
 }

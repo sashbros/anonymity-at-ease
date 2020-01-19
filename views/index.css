@@ -171,3 +171,32 @@
   background-attachment: fixed;
   height: 100vh;
 }
+
+.registerhere {
+  position: relative;
+  display: inline-block;
+  color: red;
+  text-decoration: none;
+  border: 1px solid red;
+  border-radius: 5px;
+  padding: 5px 10px;
+  overflow: hidden;
+  transition: 0.1s all;
+}
+.registerhere:hover {
+  text-decoration: none;
+  color: white;
+}
+.registerhere::before {
+  background: red;
+  content: '';
+  position: absolute;
+  z-index: -1;
+  transition: all 0.1s;
+  transform: translate(0%, -35%) rotate(-45deg);
+  width: 100%;
+  height: 0;
+}
+.registerhere:hover::before {
+  height: 380%;
+}

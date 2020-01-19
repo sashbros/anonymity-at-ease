@@ -15,7 +15,8 @@ app.use(express.static(__dirname + '/images')); //for images
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieSession({
     name: 'session',
-    keys: ['key1', 'key2']
+    keys: ['key1', 'key2'],
+    maxAge: 1000* 60 * 60 *24 * 365
 }));
 app.use(fileUpload());
 

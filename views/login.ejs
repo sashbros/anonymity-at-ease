@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/index.css">
     <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAERERAAAAABEREREQAAABEREAERAAAAEREAABEAAAAREAAAEQAAABEQAAERAAAAERAAERAAAAAAAAAREAAAAAAAAREAAAAAAAAREAARAAAAAREAABEAAAABEQAAEQAAAAERAAERAAAAAREQERAAAAABEREREAAAAAABEREAAADgfwAAgD8AAAY/AAAPPwAAHz8AAB4/AAAcfwAA/H8AAPj/AADxzwAA488AAOPPAADjjwAA4R8AAOAfAAD4PwAA" rel="icon" type="image/x-icon" />
-    <title>Login</title>
+    <title>Login - sashy</title>
 </head>
 <body>
     <!-- loader -->
@@ -17,19 +17,44 @@
     </div>
     <!-- loader end -->
 
-    <h1>Login</h1>
-    <form action="/login" method="post">
-        <div class="form-group">
-            <input type="text" name="username" class="form-control" placeholder="Username" required>
+
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-sm navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">SASHY</a>
         </div>
-        <div class="form-group">
-            <input type="password" name="password" class="form-control" placeholder="Password" required>
+    </nav>
+    <!-- navbar end -->
+
+
+
+
+    <div class="container pt-5 mt-5">
+        <div class="text-center row">
+            <div class="col-sm-12 col-lg-6">
+                <h1>Login</h1><br>
+                <form action="/login" method="post">
+                    <div class="form-group">
+                        <input type="text" name="username" class="form-control" placeholder="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" class="form-control" placeholder="Password" required>
+                    </div>
+                    <div class="form-group text-center">
+                        <input class="btn btn-outline-primary" type="submit" value="Login">
+                    </div>
+                </form><br>
+                <a class="registerhere" href="/register">Register Here</a>
+            </div>
+            <div class="mt-5 mb-5 col-sm-12 col-lg-6">
+                <h3>post whatever you like and no one will know your identity</h3><br>
+                <h4>BUT, respect is now mandatory</h4><br>
+                <h4>each post can be given positive and negative votes</h4><br>
+                <h4><b>your opinion matters</b> to us</h4><br>
+                <h4>and so does your <b>anonymity</b></h4><br>
+            </div>
         </div>
-        <div class="form-group text-center">
-            <input class="btn btn-primary" type="submit" value="Login">
-        </div>
-    </form>    
-    <a href="/register">REGISTER HERE</a>
+    </div>
 
 
     <!-- footer -->

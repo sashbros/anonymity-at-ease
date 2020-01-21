@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAERERAAAAABEREREQAAABEREAERAAAAEREAABEAAAAREAAAEQAAABEQAAERAAAAERAAERAAAAAAAAAREAAAAAAAAREAAAAAAAAREAARAAAAAREAABEAAAABEQAAEQAAAAERAAERAAAAAREQERAAAAABEREREAAAAAABEREAAADgfwAAgD8AAAY/AAAPPwAAHz8AAB4/AAAcfwAA/H8AAPj/AADxzwAA488AAOPPAADjjwAA4R8AAOAfAAD4PwAA" rel="icon" type="image/x-icon" />
+    <link rel="stylesheet" href="/index.css">
+    <title>Polls - Anonymity at Ease</title>
+</head>
+<body>
+    <!-- loader -->
+    <div class="loader">
+        <img src="/loader.gif" alt="" />
+    </div>
+    <!-- loader end -->
+
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-sm navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">SASHY</a>
+            <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item text-white">
+                        <form action="/warzone" method="POST">
+                            <div class="pt-3 form-group text-white mr-4">
+                                <input class="btn btn-primary btn-sm" type="submit" value="Return to Warzone">
+                            </div>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <form action="/logout" method="POST">
+                            <div class="ml-2 pt-3 form-group text-white">
+                                <label class="mr-4">You're poll-zoned , <%= name %></label>
+                                <input class="btn btn-outline-warning btn-sm" type="submit" value="Logout">
+                            </div>
+                        </form>
+                    </li>
+                </ul>
+                
+            </div>
+        </div>
+        
+    </nav>
+    <!-- navbar end -->
+
+
+
+    <div class="mt-5 pt-5 container">
+        <%= question %>
+    </div>
+
+    <% if (finalrows.length === 0) { %>
+
+        <div class="container">
+            <form action="/votesubmitted" method="POST">
+                <div class="form-group">
+                    <input class="" type="hidden" name="pollidtext", value= <%= data[0].pollid %> >
+                </div>
+                <div class="form-group text-center">
+                    <input type="radio" name="option" value="yes" required>yes
+                    <input type="radio" name="option" value="no" required>no
+                </div>
+                <div class="form-group text-center">
+                    <input class="btn btn-outline-primary" type="submit" value="Submit Answer">
+                </div>
+            </form>
+        </div>
+        <br><br>
+    
+    <% } else { %>
+        
+        <h1>yes votes</h1><div><%= data[0].num_yes %></div>
+        <h1>no votes</h1><div><%= data[0].num_no %></div>
+
+    <% } %>
+
+
+    
+
+
+    <button id="topBtn"><i class="fas fa-angle-double-up"></i></button>
+
+
+    <!-- footer -->
+     <div class="footer">
+        Made with &#10084; by Sarvagna Shukla
+    </div>
+    <!-- footer end -->
+
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <!-- font awesome script -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    <script>
+        $(window).scroll(function() {
+            sessionStorage.scrollTop = $(this).scrollTop();
+        });
+
+        $(document).ready(function() {
+            if (sessionStorage.scrollTop != "undefined") {
+                $(window).scrollTop(sessionStorage.scrollTop);
+            }
+
+            //scroll to top code starts here
+            $(window).on('scroll', function() {
+                if($(this).scrollTop() > 40) {
+                    $('#topBtn').fadeIn();
+                }
+                else {
+                    $('#topBtn').fadeOut();
+                }
+            });
+
+            $('#topBtn').on('click', function() {
+                $('html, body').animate({scrollTop: 0}, 800);
+            });
+            // scroll to top code ends here
+        });
+
+        function openNav() {
+            if ($(window).width() < 720)
+                $('.navbar-toggler-icon').click();
+            document.getElementById("mySidenav").style.width = "100vw";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    $('.ajaDisp').attr('src', e.target.result);
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $(".imgUpl").change(function() {
+            readURL(this);
+        });
+
+        function imageExists(url, callback) {
+            var img = new Image();
+            img.onload = function() { callback(true); };
+            img.onerror = function() { callback(false); };
+            img.src = url;
+        }
+        window.addEventListener("load", function () {
+            const loader = document.querySelector(".loader");
+            loader.className += " hidden"; // class "loader hidden"
+        });
+    </script>
+    
+</body>
+</html>

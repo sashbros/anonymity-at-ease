@@ -172,7 +172,7 @@ app.post('/login', function(req, res) {
                         console.log("user finding successful");
                         if (rows[0].password === password) {
                             req.session.username = username;
-                            res.redirect('/');
+                            res.redirect("/");
                         }
                         else {
                             res.send("Wrong password");
@@ -207,6 +207,7 @@ app.post('/register', function(req, res) {
         //     "password": password
         // });
 
+
         pool.getConnection(function(err, tempConn) {
             if (err) {
                 tempConn.release();
@@ -214,20 +215,37 @@ app.post('/register', function(req, res) {
             }
             else {
                 console.log("Connected");
-                password = sha1(password);
-                tempConn.query("insert into users(username, password) values(?, ?)", [username, password], function(err, rows, fields) {
-                    tempConn.release();
+                tempConn.query("select uid from users where username=?", [username], function(err, userrow, fields) {
                     if (err) {
-                        console.log("Error in user addition query");
+                        console.log("error in user duplicate checking query");
                     }
                     else {
-                        console.log("user addition successful");
+                        console.log("user duplicate checking query successful");
+                        if (userrow.length != 0) {
+                            res.send("Username is already used");
+                        }
+                        else {
+                            password = sha1(password);
+                            tempConn.query("insert into users(username, password) values(?, ?)", [username, password], function(err, rows, fields) {
+                                tempConn.release();
+                                if (err) {
+                                    console.log("Error in user addition query");
+                                }
+                                else {
+                                    console.log("user addition successful");
+                                    res.redirect("/login");
+                                }
+                            });
+                        }
                     }
                 });
+
+
+                
             }
         });
 
-        res.redirect("/login");
+        
     }
 });
 
@@ -490,10 +508,153 @@ app.get('/question/:question', function(req, res) {
     }
     else {
         var question = req.params.question;
-        res.send("this is the question: " + question);
+        
+        pool.getConnection(function(err, tempConn) {
+            if (err) {
+                tempConn.release();
+                console.log("Error in connecting");
+            }
+            else {
+                console.log("Connected");
+                tempConn.query("select pollid, num_yes, num_no from polls where poll_ques=?", [question], function(err, rows, fields) {
+                    // tempConn.release();
+                    if (err) {
+                        console.log("error in searching pollid query");
+                    }
+                    else {
+                        console.log("pollid search successful");
+                        tempConn.query("select uid from users where username=?", [req.session.username], function(err, userrows,fields) {
+                            // tempConn.release();
+                            if (err) {
+                                console.log("error in finding username uid query");
+                            }
+                            else {
+                                console.log("username uid finding successful");
+                                var pollid = rows[0].pollid;
+                                var uid = userrows[0].uid;
+                                tempConn.query("select uid from pollvotes where uid=? and pollid=?", [uid, pollid], function(err, finalrows, fields) {
+                                    tempConn.release();
+                                    if (err) {
+                                        console.log("error in finding pollvotes query");
+                                    }
+                                    else {
+                                        console.log("finding pollvotes successful");
+                                        res.render('votingpolls.ejs', {name: req.session.username, question: question, data: rows, finalrows: finalrows});
+                                    }
+                                });
+
+                                
+
+                            }
+                        });
+
+
+                        
+                    }
+                });
+            }
+        
+        });
+
+
+       
     }
 });
 
+app.post('/votesubmitted', function(req, res) {
+    if (req.session.username == undefined) {
+        res.redirect("/login");
+    }
+    else {
+        var option = req.body.option;
+        var pollid = req.body.pollidtext;
+        console.log(option);
+        if (option == "yes") {
+            pool.getConnection(function(err, tempConn) {
+                if (err) {
+                    tempConn.release();
+                    console.log("Error in connecting");
+                }
+                else {
+                    console.log("Connected");
+
+                    tempConn.query("update polls set num_yes=num_yes+1 where pollid=?", [pollid], function(err, numyesrow, fields) {
+                        if (err) {
+                            console.log("error updating num yes query");
+                        }
+                        else {
+                            console.log("updating num yes successful");
+                            tempConn.query("select uid from users where username=?", [req.session.username], function(err, userrows, fields) {
+                                if (err) {
+                                    console.log("error in finding username uid query");
+                                }
+                                else {
+                                    console.log("finding username uid successful");
+                                    var uid = userrows[0].uid;
+                                    tempConn.query("insert into pollvotes values(?, ?)", [uid, pollid], function(err, rows, fields) {
+                                        tempConn.release();
+                                        if (err) {
+                                            console.log("error in poll insertion query");
+                                        }
+                                        else {
+                                            console.log("poll insertion successful");
+                                            res.redirect("back");
+                                        }
+                                    });
+                                }
+                            });
+
+                        }
+                    });
+                    
+                }
+            
+            });
+        }
+        else {
+            pool.getConnection(function(err, tempConn) {
+                if (err) {
+                    tempConn.release();
+                    console.log("Error in connecting");
+                }
+                else {
+                    console.log("Connected");
+
+                    tempConn.query("update polls set num_no=num_no+1 where pollid=?", [pollid], function(err, numnorow, fields) {
+                        if (err) {
+                            console.log("error updating num yes query");
+                        }
+                        else {
+                            console.log("updating num yes successful");
+                            tempConn.query("select uid from users where username=?", [req.session.username], function(err, userrows, fields) {
+                                if (err) {
+                                    console.log("error in finding username uid query");
+                                }
+                                else {
+                                    console.log("finding username uid successful");
+                                    var uid = userrows[0].uid;
+                                    tempConn.query("insert into pollvotes values(?, ?)", [uid, pollid], function(err, rows, fields) {
+                                        tempConn.release();
+                                        if (err) {
+                                            console.log("error in poll insertion query");
+                                        }
+                                        else {
+                                            console.log("poll insertion successful");
+                                            res.redirect("back");
+                                        }
+                                    });
+                                }
+                            });
+
+                        }
+                    });
+                    
+                }
+            
+            });
+        }
+    }
+})
 
 
 
@@ -561,7 +722,12 @@ app.get('/sortbyvotes', function(req, res) {
 
 app.use(function(req, res, next) {
     // res.redirect('/');
-    res.render('pageNotFound.ejs', {name: req.session.username});
+    if (req.session.username == undefined) {
+        res.redirect("/login");
+    }
+    else {
+        res.render('pageNotFound.ejs', {name: req.session.username});
+    }
   });
 app.listen(3000, function() {
     console.log("Server started on 3000");

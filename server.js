@@ -370,6 +370,9 @@ app.get('/users/:username', function(req, res) {
     if (req.session.username == undefined) {
         res.redirect("/login");
     }
+    else if (req.session.username !== req.params.username) {
+        res.render('stayout.ejs', {name: req.session.username});
+    }
     else {
         pool.getConnection(function(err, tempConn) {
             if (err) {
@@ -380,7 +383,7 @@ app.get('/users/:username', function(req, res) {
                 console.log("Connected");
                 tempConn.query("select uid from users where username=?", [req.params.username], function(err, userFindRow, fields) {
                     if (err) {
-                        console.log("error in finding user at home query")
+                        console.log("error in finding user at home query");
                     }
                     else {
                         if (userFindRow.length == 0) {
@@ -440,7 +443,7 @@ app.get('/users/:username', function(req, res) {
                             });
                         }
                     }
-                })
+                });
     
 
 
@@ -523,30 +526,36 @@ app.get('/question/:question', function(req, res) {
                     }
                     else {
                         console.log("pollid search successful");
-                        tempConn.query("select uid from users where username=?", [req.session.username], function(err, userrows,fields) {
-                            // tempConn.release();
-                            if (err) {
-                                console.log("error in finding username uid query");
-                            }
-                            else {
-                                console.log("username uid finding successful");
-                                var pollid = rows[0].pollid;
-                                var uid = userrows[0].uid;
-                                tempConn.query("select uid from pollvotes where uid=? and pollid=?", [uid, pollid], function(err, finalrows, fields) {
-                                    tempConn.release();
-                                    if (err) {
-                                        console.log("error in finding pollvotes query");
-                                    }
-                                    else {
-                                        console.log("finding pollvotes successful");
-                                        res.render('votingpolls.ejs', {name: req.session.username, question: question, data: rows, finalrows: finalrows});
-                                    }
-                                });
-
-                                
-
-                            }
-                        });
+                        if (rows.length == 0) {
+                            res.render('pageNotFound.ejs', {name: req.session.username});
+                        }
+                        else {
+                            tempConn.query("select uid from users where username=?", [req.session.username], function(err, userrows,fields) {
+                                // tempConn.release();
+                                if (err) {
+                                    console.log("error in finding username uid query");
+                                }
+                                else {
+                                    console.log("username uid finding successful");
+                                    var pollid = rows[0].pollid;
+                                    var uid = userrows[0].uid;
+                                    tempConn.query("select uid from pollvotes where uid=? and pollid=?", [uid, pollid], function(err, finalrows, fields) {
+                                        tempConn.release();
+                                        if (err) {
+                                            console.log("error in finding pollvotes query");
+                                        }
+                                        else {
+                                            console.log("finding pollvotes successful");
+                                            res.render('votingpolls.ejs', {name: req.session.username, question: question, data: rows, finalrows: finalrows});
+                                        }
+                                    });
+    
+                                    
+    
+                                }
+                            });
+                        }
+                        
 
 
                         
@@ -654,7 +663,7 @@ app.post('/votesubmitted', function(req, res) {
             });
         }
     }
-})
+});
 
 
 

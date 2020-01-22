@@ -9,9 +9,9 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAERERAAAAABEREREQAAABEREAERAAAAEREAABEAAAAREAAAEQAAABEQAAERAAAAERAAERAAAAAAAAAREAAAAAAAAREAAAAAAAAREAARAAAAAREAABEAAAABEQAAEQAAAAERAAERAAAAAREQERAAAAABEREREAAAAAABEREAAADgfwAAgD8AAAY/AAAPPwAAHz8AAB4/AAAcfwAA/H8AAPj/AADxzwAA488AAOPPAADjjwAA4R8AAOAfAAD4PwAA" rel="icon" type="image/x-icon" />
     <link rel="stylesheet" href="/index.css">
-    <title>Polls - Anonymity at Ease</title>
+    <title>Stay away from other profiles</title>
 </head>
-<body>
+<body class="stayout">
     <!-- loader -->
     <div class="loader">
         <img src="/loader.gif" alt="" />
@@ -39,7 +39,7 @@
                     <li class="nav-item">
                         <form action="/logout" method="POST">
                             <div class="ml-2 pt-3 form-group text-white">
-                                <label class="mr-4">You're poll-zoned , <%= name %></label>
+                                <label class="mr-4"><%= name %>, go home!</label>
                                 <input class="btn btn-outline-warning btn-sm" type="submit" value="Logout">
                             </div>
                         </form>
@@ -52,57 +52,15 @@
     </nav>
     <!-- navbar end -->
 
-    <div class="what mt-5 pt-5 container">
-        <h4>the QUESTION is:</h4>
-    </div><br><br>
-    <div class="whoaf container text-center">
-        <div style="font-size: 25px;"><%= question %></div>
-    </div>
 
-    <% if (finalrows.length === 0) { %>
 
-        <div class="container">
-            <form action="/votesubmitted" method="POST">
-                <div class="form-group">
-                    <input class="" type="hidden" name="pollidtext", value= <%= data[0].pollid %> >
-                </div>
-                <div class="form-group text-center">
-                    <input type="radio" name="option" value="yes" required><span style="font-size: 18px;" class="whoaf">&emsp;YES</span><br><br>
-                    <input type="radio" name="option" value="no" required><span style="font-size: 18px;" class="whoaf">&emsp;NO</span>
-                </div><br>
-                <div class="form-group text-center">
-                    <input class="btn btn-outline-primary" type="submit" value="Submit Answer">
-                </div>
-            </form>
-        </div>
-        <br><br>
+
+
+
+
+
+
     
-    <% } else { %>
-
-        <br>
-        <div class="container">
-            <h4 class="what">total votes: <span><%= data[0].num_yes + data[0].num_no %></span></h4><br>
-
-            <h4 class="whoaf">yes votes: <span><%= data[0].num_yes %></span></h4>
-            <div class="what"><%= (data[0].num_yes/(data[0].num_yes + data[0].num_no) * 100).toFixed(2) %> %</div>
-            <div class="progress" style="height:15px">
-                <div class="yesp progress-bar bg-success" style="width:0%;height:15px"></div>
-            </div>
-            <br>
-            <h4 class="whoaf">no votes: <span><%= data[0].num_no %></span></h4>
-            <div class="what"><%= (data[0].num_no/(data[0].num_yes + data[0].num_no) * 100).toFixed(2) %> %</div>
-            <div class="progress" style="height:15px">
-                <div class="nop progress-bar bg-danger" style="width:0%;height:15px"></div>
-            </div>
-            <br>
-        </div>
-        <br><br>
-
-    <% } %>
-
-    <div class="container">
-        <h3 class="whoaf">Share this link to your eligibe voters!!</h3><br>
-    </div>
 
 
     <button id="topBtn"><i class="fas fa-angle-double-up"></i></button>
@@ -151,13 +109,6 @@
                 $('html, body').animate({scrollTop: 0}, 800);
             });
             // scroll to top code ends here
-
-            $(".yesp").animate({
-                width: "<%= data[0].num_yes/(data[0].num_yes + data[0].num_no) * 100 %>%"
-            }, 1000);
-            $(".nop").animate({
-                width: "<%= data[0].num_no/(data[0].num_yes + data[0].num_no) * 100 %>%"
-            }, 1000);
         });
 
         function openNav() {

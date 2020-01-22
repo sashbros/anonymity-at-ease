@@ -79,8 +79,8 @@
 
 
     <div class="mt-5 pt-5 container text-center">
-        <h1>Here's to some controlled Anonymity</h1><br>
-        <h3>Can upvote and downvote any post</h3><br>
+        <h1>What's on your mind, <%= name %></h1><br>
+        <h3 class="whoaf">Can upvote and downvote any post</h3><br>
     </div><br>
 
 
@@ -164,8 +164,8 @@
 
 
             <div class="matter">
-                <div class="who ml-3"><a href="/users/<%= data[i].username %>">au/<%= data[i].username %></a> posted</div>
-                <div class="what ml-3"><%= data[i].p_des %></div>
+                <!-- <div class="who ml-3"><a href="/users/<%= data[i].username %>">au/<%= data[i].username %></a> posted</div> -->
+                <div class="what ml-3 pt-3"><%= data[i].p_des %></div>
                 <% if (data[i].p_image !== null) { %>
                     <div class="text-center">
                         <img class="mt-3 mb-3 img-fluid dispImg" src= <%= data[i].p_image %> alt="">

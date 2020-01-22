@@ -175,6 +175,22 @@
   background-attachment: fixed;
   height: 100vh;
 }
+.stayout {
+  background: url('/stayout.jpg') no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  height: 100vh;
+}
+@media (max-width: 500px) {
+  .stayout {
+    background: url('/stayout2.jpg') no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    height: 100vh;
+  }
+}
 
 .registerhere {
   position: relative;
@@ -218,4 +234,9 @@
   text-decoration: none;
   color: white;
   background: green;
+}
+
+.progress.active .progress-bar {
+  -webkit-transition: none !important;
+  transition: none !important;
 }

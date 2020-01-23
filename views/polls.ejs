@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAERERAAAAABEREREQAAABEREAERAAAAEREAABEAAAAREAAAEQAAABEQAAERAAAAERAAERAAAAAAAAAREAAAAAAAAREAAAAAAAAREAARAAAAAREAABEAAAABEQAAEQAAAAERAAERAAAAAREQERAAAAABEREREAAAAAABEREAAADgfwAAgD8AAAY/AAAPPwAAHz8AAB4/AAAcfwAA/H8AAPj/AADxzwAA488AAOPPAADjjwAA4R8AAOAfAAD4PwAA" rel="icon" type="image/x-icon" />
     <link rel="stylesheet" href="/index.css">
-    <title>Polls - Anonymity at Ease</title>
+    <title>Polls - thesash</title>
 </head>
 <body>
     <!-- loader -->
@@ -21,7 +21,9 @@
     <!-- navbar -->
     <nav class="navbar navbar-expand-sm navbar-dark bg-primary fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="/">SASHY</a>
+            <a class="navbar-brand" href="/">
+                <img src="/thesash.png" alt="thesash" style="width: 100px">
+            </a>
             <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
                 aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -63,7 +65,7 @@
         <h1 class="whoaf">Create a POLL</h1><br>
         <form action="/pollcreated" method="post">
             <div class="form-group">
-                <input type="text" name="question" class="form-control" placeholder="Write your question.." minlength="5" required>
+                <input type="text" name="question" class="form-control" placeholder="Write your question.." minlength="8" required>
             </div>
             <div>
                 <div class="whoaf">this will have 2 options</div>

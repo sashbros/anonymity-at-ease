@@ -747,6 +747,6 @@ app.use(function(req, res, next) {
         res.render('pageNotFound.ejs', {name: req.session.username});
     }
   });
-app.listen(3000, function() {
+app.listen(80, function() {
     // console.log("Server started on 3000");
 });

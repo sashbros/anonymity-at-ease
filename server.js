@@ -20,22 +20,14 @@ app.use(cookieSession({
 }));
 app.use(fileUpload());
 
-//creating pool connection
-// const pool = mysql.createPool({
-//     connectionLimit: 20,
-//     host: 'localhost',
-//     user: 'root',
-//     password: 'Sarva#1992',
-//     database: 'anon',
-//     charset: 'utf8mb4'
-// });
+
 const pool = mysql.createPool({
     connectionLimit: 1,
-    host: 'remotemysql.com',
-    user: 'Pcz4fSl6O4',
-    password: 'gCjU1z4l5f',
-    database: 'Pcz4fSl6O4',
-    charset: 'utf8mb4'
+    host: '',
+    user: '',
+    password: '',
+    database: '',
+    charset: ''
 });
 // var ajaxPost = "";
 // const users = []
